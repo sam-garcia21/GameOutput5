@@ -1,6 +1,7 @@
 [gd_scene format=3 uid="uid://c2hrcmnjn5pqv"]
 
 [ext_resource type="Script" uid="uid://clj73bm2li7r3" path="res://scripts/player/player.gd" id="1_player"]
+[ext_resource type="Script" uid="uid://cmgn3fbkhhgu5" path="res://scripts/player/arm_mesh.gd" id="2_p47bc"]
 [ext_resource type="Script" uid="uid://irn4q45mwwk4" path="res://scripts/player/camera_rig.gd" id="2_rig"]
 [ext_resource type="Script" uid="uid://ci7w1vmnn1y4f" path="res://scripts/player/reticle.gd" id="3_gmlin"]
 [ext_resource type="Script" uid="uid://bsb1ukp2gvupu" path="res://scripts/player/aim_ray_cast.gd" id="4_lvxji"]
@@ -84,6 +85,7 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.38, 1.25, 0)
 [node name="ArmMesh" type="MeshInstance3D" parent="Body/GunArm" unique_id=138958979]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -0.3)
 mesh = SubResource("BoxMesh_arm")
+script = ExtResource("2_p47bc")
 
 [node name="Muzzle" type="Marker3D" parent="Body/GunArm" unique_id=589141421]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -0.65)
