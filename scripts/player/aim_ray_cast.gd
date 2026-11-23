@@ -4,6 +4,7 @@ const RAY_LENGTH = 20
 const COLLISION_LAYER_ID = pow(2, 13-1)
 var check_hit = false
 var origin
+var collision_point
 @export var bullet_scene: PackedScene 
 @onready var _fire_point = $"../Body/GunArm/Muzzle"
 @onready var _aim_cast = $"../AimTarget/AimCast"
@@ -30,8 +31,8 @@ func fire_shot(origin_in, cam_mouse_ray_project_in):
 	print("fire_shot")
 	origin = origin_in
 	check_hit = true
-
-func _check_hit():
+	
+func _update_hit():
 	print("_check_hit")
 	
 	var camera = get_viewport().get_camera_3d()
@@ -50,9 +51,6 @@ func _check_hit():
 	_aim_cast.target_position = _aim_cast.to_local(end) #
 	_aim_cast.force_raycast_update()
 	
-	var result = get_world_3d().direct_space_state.intersect_ray(query)
-	
-	var collision_point: Vector3
 	if _aim_cast.is_colliding():
 		print("HIT")
 		collision_point = _aim_cast.get_collision_point()
@@ -61,21 +59,20 @@ func _check_hit():
 		var player_forward = -player.global_transform.basis.z
 		collision_point = _fire_point.global_position + (player_forward * RAY_LENGTH)
 	
-	spawn_bullet(collision_point)
-	
 	var fire_cast = $"../AimTarget/FireCast"
 	fire_cast.global_position = _fire_point.global_transform.origin
 	var local_collision_point = fire_cast.to_local(collision_point)
 	
 	fire_cast.set_target_position(local_collision_point)
 	fire_cast.force_raycast_update()
+
+func _check_hit():
+	spawn_bullet(collision_point)
 	
 	var from_gun_query = PhysicsRayQueryParameters3D.create(_fire_point.global_transform.origin, collision_point)
 	from_gun_query.exclude = [$".."]
 	
 	var from_gun_result = get_world_3d().direct_space_state.intersect_ray(from_gun_query)
-	
-	result.clear()
 	from_gun_result.clear()
 	
 func spawn_bullet(target_point: Vector3) -> void:
@@ -91,6 +88,7 @@ func spawn_bullet(target_point: Vector3) -> void:
 		bullet.look_at(target_point, Vector3.UP)
 
 func _physics_process(delta: float) -> void:
+	_update_hit()
 	if check_hit:
 		check_hit = false
 		print("check")
