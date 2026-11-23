@@ -7,6 +7,7 @@ var origin
 var cam_mouse_ray_project
 @onready var _fire_point = $"../Body/GunArm/Muzzle"
 @onready var _aim_cast = $"../AimTarget/AimCast"
+@onready var player = $".."
 
 
 # Called when the node enters the scene tree for the first time.
@@ -22,20 +23,32 @@ func fire_shot(origin_in, cam_mouse_ray_project_in):
 func _check_hit():
 	print("_check_hit")
 	
-	var end = origin + cam_mouse_ray_project * RAY_LENGTH
+	var camera = get_viewport().get_camera_3d()
+	if not camera:
+		return
+		
+	var screen_center = get_viewport().get_visible_rect().size / 2.0
+	var origin = camera.project_ray_origin(screen_center)
+	var direction = camera.project_ray_normal(screen_center)
+	var end = origin + direction * RAY_LENGTH
 	
 	var query = PhysicsRayQueryParameters3D.create(origin, end, COLLISION_LAYER_ID, [$".."])
 	query.exclude = [$".."]
 	
 	_aim_cast.global_position = origin
-	_aim_cast.set_target_position(cam_mouse_ray_project * RAY_LENGTH)
+	_aim_cast.target_position = _aim_cast.to_local(end) #
 	_aim_cast.force_raycast_update()
 	
 	var result = get_world_3d().direct_space_state.intersect_ray(query)
 	
-	print("HIT")
-	
-	var collision_point = _aim_cast.get_collision_point()
+	var collision_point: Vector3
+	if _aim_cast.is_colliding():
+		print("HIT")
+		collision_point = _aim_cast.get_collision_point()
+	else:
+		print("NO TARGET")
+		var player_forward = -player.global_transform.basis.z
+		collision_point = _fire_point.global_position + (player_forward * RAY_LENGTH)
 	
 	var fire_cast = $"../AimTarget/FireCast"
 	fire_cast.global_position = _fire_point.global_transform.origin

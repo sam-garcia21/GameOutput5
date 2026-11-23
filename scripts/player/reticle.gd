@@ -5,6 +5,8 @@ extends CenterContainer
 
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
+	var screen_center: Vector2 = get_viewport().get_visible_rect().size / 2.0
+	set_position(screen_center)
 	queue_redraw()
 
 

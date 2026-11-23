@@ -1,0 +1,141 @@
+[gd_scene format=3 uid="uid://c2hrcmnjn5pqv"]
+
+[ext_resource type="Script" uid="uid://clj73bm2li7r3" path="res://scripts/player/player.gd" id="1_player"]
+[ext_resource type="Script" uid="uid://irn4q45mwwk4" path="res://scripts/player/camera_rig.gd" id="2_rig"]
+[ext_resource type="Script" uid="uid://ci7w1vmnn1y4f" path="res://scripts/player/reticle.gd" id="3_gmlin"]
+[ext_resource type="Script" uid="uid://bsb1ukp2gvupu" path="res://scripts/player/aim_ray_cast.gd" id="4_lvxji"]
+
+[sub_resource type="CapsuleShape3D" id="CapsuleShape3D_body"]
+radius = 0.4
+height = 1.8
+
+[sub_resource type="StandardMaterial3D" id="Mat_body"]
+albedo_color = Color(0.25, 0.45, 0.75, 1)
+
+[sub_resource type="CapsuleMesh" id="CapsuleMesh_body"]
+material = SubResource("Mat_body")
+radius = 0.38
+height = 1.4
+
+[sub_resource type="StandardMaterial3D" id="Mat_arm"]
+albedo_color = Color(0.2, 0.2, 0.22, 1)
+
+[sub_resource type="BoxMesh" id="BoxMesh_back"]
+material = SubResource("Mat_arm")
+size = Vector3(0.4, 0.5, 0.15)
+
+[sub_resource type="StandardMaterial3D" id="Mat_head"]
+albedo_color = Color(0.9, 0.75, 0.6, 1)
+
+[sub_resource type="SphereMesh" id="SphereMesh_head"]
+material = SubResource("Mat_head")
+radius = 0.22
+height = 0.44
+
+[sub_resource type="StandardMaterial3D" id="Mat_visor"]
+albedo_color = Color(0.1, 0.1, 0.1, 1)
+emission_enabled = true
+emission = Color(0.2, 0.9, 1, 1)
+emission_energy_multiplier = 1.5
+
+[sub_resource type="BoxMesh" id="BoxMesh_visor"]
+material = SubResource("Mat_visor")
+size = Vector3(0.3, 0.08, 0.06)
+
+[sub_resource type="BoxMesh" id="BoxMesh_arm"]
+material = SubResource("Mat_arm")
+size = Vector3(0.12, 0.12, 0.6)
+
+[sub_resource type="SphereShape3D" id="SphereShape3D_cam"]
+radius = 0.2
+
+[node name="Player" type="CharacterBody3D" unique_id=542784144]
+collision_layer = 2
+collision_mask = 5
+script = ExtResource("1_player")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="." unique_id=799497224]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.9, 0)
+shape = SubResource("CapsuleShape3D_body")
+
+[node name="Body" type="Node3D" parent="." unique_id=885475074]
+
+[node name="BodyMesh" type="MeshInstance3D" parent="Body" unique_id=1107146270]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.7, 0)
+mesh = SubResource("CapsuleMesh_body")
+
+[node name="Backpack" type="MeshInstance3D" parent="Body" unique_id=1905511810]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0.4)
+mesh = SubResource("BoxMesh_back")
+
+[node name="Head" type="Node3D" parent="Body" unique_id=1131819742]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.6, 0)
+
+[node name="HeadMesh" type="MeshInstance3D" parent="Body/Head" unique_id=928376858]
+mesh = SubResource("SphereMesh_head")
+
+[node name="Visor" type="MeshInstance3D" parent="Body/Head" unique_id=976011120]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.03, -0.2)
+mesh = SubResource("BoxMesh_visor")
+
+[node name="GunArm" type="Node3D" parent="Body" unique_id=713441799]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.38, 1.25, 0)
+
+[node name="ArmMesh" type="MeshInstance3D" parent="Body/GunArm" unique_id=138958979]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -0.3)
+mesh = SubResource("BoxMesh_arm")
+
+[node name="Muzzle" type="Marker3D" parent="Body/GunArm" unique_id=589141421]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -0.65)
+
+[node name="CameraPivot" type="Node3D" parent="." unique_id=1718012565]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.65, 0)
+script = ExtResource("2_rig")
+
+[node name="SpringArm3D" type="SpringArm3D" parent="CameraPivot" unique_id=1288910018]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.6, 0, 0)
+shape = SubResource("SphereShape3D_cam")
+spring_length = 2.2
+margin = 0.05
+
+[node name="Camera3D" type="Camera3D" parent="CameraPivot/SpringArm3D" unique_id=1989866821]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 2.2)
+current = true
+fov = 70.0
+
+[node name="Crosshair" type="Control" parent="." unique_id=381022236]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 1
+
+[node name="Reticle" type="CenterContainer" parent="Crosshair" unique_id=1730475689]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -20.0
+offset_top = -20.0
+offset_right = 20.0
+offset_bottom = 20.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("3_gmlin")
+
+[node name="AimRayCast" type="Node3D" parent="." unique_id=999113866]
+script = ExtResource("4_lvxji")
+
+[node name="AimTarget" type="Node3D" parent="." unique_id=1408605690]
+
+[node name="AimCast" type="RayCast3D" parent="AimTarget" unique_id=1050908056]
+debug_shape_custom_color = Color(0, 0, 0.9647059, 0.3764706)
+debug_shape_thickness = 1
+
+[node name="FireCast" type="RayCast3D" parent="AimTarget" unique_id=1235233099]
+debug_shape_custom_color = Color(0.96862745, 0, 0, 0.41960785)
+debug_shape_thickness = 1
