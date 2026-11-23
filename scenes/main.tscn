@@ -1,6 +1,8 @@
-[gd_scene load_steps=20 format=3]
+[gd_scene format=3 uid="uid://dgfsfw4lchcev"]
 
 [ext_resource type="PackedScene" path="res://scenes/player/player.tscn" id="1_player"]
+[ext_resource type="PackedScene" uid="uid://b60chkqu05yva" path="res://scenes/crate.tscn" id="1_sugp2"]
+[ext_resource type="PackedScene" uid="uid://cpdgfhi0p8jyt" path="res://scenes/enemy/enemy.tscn" id="2_0wfyh"]
 
 [sub_resource type="ProceduralSkyMaterial" id="SkyMat"]
 
@@ -16,18 +18,15 @@ tonemap_mode = 2
 [sub_resource type="StandardMaterial3D" id="Mat_ground"]
 albedo_color = Color(0.35, 0.42, 0.33, 1)
 
-[sub_resource type="StandardMaterial3D" id="Mat_wall"]
-albedo_color = Color(0.6, 0.6, 0.62, 1)
-
-[sub_resource type="StandardMaterial3D" id="Mat_crate"]
-albedo_color = Color(0.65, 0.45, 0.25, 1)
-
 [sub_resource type="BoxMesh" id="Mesh_floor"]
 material = SubResource("Mat_ground")
 size = Vector3(60, 1, 60)
 
 [sub_resource type="BoxShape3D" id="Shape_floor"]
 size = Vector3(60, 1, 60)
+
+[sub_resource type="StandardMaterial3D" id="Mat_wall"]
+albedo_color = Color(0.6, 0.6, 0.62, 1)
 
 [sub_resource type="BoxMesh" id="Mesh_wall"]
 material = SubResource("Mat_wall")
@@ -43,12 +42,8 @@ size = Vector3(1, 4, 1)
 [sub_resource type="BoxShape3D" id="Shape_pillar"]
 size = Vector3(1, 4, 1)
 
-[sub_resource type="BoxMesh" id="Mesh_crate"]
-material = SubResource("Mat_crate")
-size = Vector3(1.5, 1, 1.5)
-
-[sub_resource type="BoxShape3D" id="Shape_crate"]
-size = Vector3(1.5, 1, 1.5)
+[sub_resource type="StandardMaterial3D" id="Mat_crate"]
+albedo_color = Color(0.65, 0.45, 0.25, 1)
 
 [sub_resource type="BoxMesh" id="Mesh_ramp"]
 material = SubResource("Mat_crate")
@@ -64,148 +59,172 @@ size = Vector3(4, 0.5, 4)
 [sub_resource type="BoxShape3D" id="Shape_platform"]
 size = Vector3(4, 0.5, 4)
 
-[node name="Main" type="Node3D"]
+[sub_resource type="BoxMesh" id="BoxMesh_sugp2"]
+material = SubResource("Mat_wall")
+size = Vector3(120, 8, 0.5)
 
-[node name="WorldEnvironment" type="WorldEnvironment" parent="."]
+[sub_resource type="BoxShape3D" id="BoxShape3D_jyhfs"]
+size = Vector3(120, 8, 0.5)
+
+[node name="Main" type="Node3D" unique_id=239314810]
+
+[node name="WorldEnvironment" type="WorldEnvironment" parent="." unique_id=482366354]
 environment = SubResource("Env")
 
-[node name="Sun" type="DirectionalLight3D" parent="."]
+[node name="Sun" type="DirectionalLight3D" parent="." unique_id=110193618]
 transform = Transform3D(1, 0, 0, 0, 0.643, -0.766, 0, 0.766, 0.643, 0, 10, 0)
 shadow_enabled = true
 
-[node name="Level" type="Node3D" parent="."]
+[node name="Level" type="Node3D" parent="." unique_id=1795164160]
 
-[node name="Floor" type="StaticBody3D" parent="Level"]
+[node name="Floor" type="StaticBody3D" parent="Level" unique_id=1899377802]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.5, 0)
-collision_layer = 1
 collision_mask = 0
 
-[node name="Mesh" type="MeshInstance3D" parent="Level/Floor"]
+[node name="Mesh" type="MeshInstance3D" parent="Level/Floor" unique_id=1673410355]
 mesh = SubResource("Mesh_floor")
 
-[node name="Collision" type="CollisionShape3D" parent="Level/Floor"]
+[node name="Collision" type="CollisionShape3D" parent="Level/Floor" unique_id=228577022]
 shape = SubResource("Shape_floor")
 
-[node name="WallNorth" type="StaticBody3D" parent="Level"]
+[node name="WallNorth" type="StaticBody3D" parent="Level" unique_id=73687172]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2, -20)
-collision_layer = 1
 collision_mask = 0
 
-[node name="Mesh" type="MeshInstance3D" parent="Level/WallNorth"]
+[node name="Mesh" type="MeshInstance3D" parent="Level/WallNorth" unique_id=1347837853]
 mesh = SubResource("Mesh_wall")
 
-[node name="Collision" type="CollisionShape3D" parent="Level/WallNorth"]
+[node name="Collision" type="CollisionShape3D" parent="Level/WallNorth" unique_id=1162748112]
 shape = SubResource("Shape_wall")
 
-[node name="WallWest" type="StaticBody3D" parent="Level"]
+[node name="WallWest" type="StaticBody3D" parent="Level" unique_id=893113702]
 transform = Transform3D(0, 0, -1, 0, 1, 0, 1, 0, 0, -14, 2, -8)
-collision_layer = 1
 collision_mask = 0
 
-[node name="Mesh" type="MeshInstance3D" parent="Level/WallWest"]
+[node name="Mesh" type="MeshInstance3D" parent="Level/WallWest" unique_id=1636502109]
 mesh = SubResource("Mesh_wall")
 
-[node name="Collision" type="CollisionShape3D" parent="Level/WallWest"]
+[node name="Collision" type="CollisionShape3D" parent="Level/WallWest" unique_id=782437753]
 shape = SubResource("Shape_wall")
 
-[node name="WallNearSpawn" type="StaticBody3D" parent="Level"]
+[node name="WallNearSpawn" type="StaticBody3D" parent="Level" unique_id=771859288]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -6, 2, 6)
-collision_layer = 1
 collision_mask = 0
 
-[node name="Mesh" type="MeshInstance3D" parent="Level/WallNearSpawn"]
+[node name="Mesh" type="MeshInstance3D" parent="Level/WallNearSpawn" unique_id=1534685981]
 mesh = SubResource("Mesh_wall")
 
-[node name="Collision" type="CollisionShape3D" parent="Level/WallNearSpawn"]
+[node name="Collision" type="CollisionShape3D" parent="Level/WallNearSpawn" unique_id=1624833555]
 shape = SubResource("Shape_wall")
 
-[node name="Pillar1" type="StaticBody3D" parent="Level"]
+[node name="Pillar1" type="StaticBody3D" parent="Level" unique_id=1638327407]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -3, 2, -6)
-collision_layer = 1
 collision_mask = 0
 
-[node name="Mesh" type="MeshInstance3D" parent="Level/Pillar1"]
+[node name="Mesh" type="MeshInstance3D" parent="Level/Pillar1" unique_id=1920762149]
 mesh = SubResource("Mesh_pillar")
 
-[node name="Collision" type="CollisionShape3D" parent="Level/Pillar1"]
+[node name="Collision" type="CollisionShape3D" parent="Level/Pillar1" unique_id=669717785]
 shape = SubResource("Shape_pillar")
 
-[node name="Pillar2" type="StaticBody3D" parent="Level"]
+[node name="Pillar2" type="StaticBody3D" parent="Level" unique_id=2065920723]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 3, 2, -8)
-collision_layer = 1
 collision_mask = 0
 
-[node name="Mesh" type="MeshInstance3D" parent="Level/Pillar2"]
+[node name="Mesh" type="MeshInstance3D" parent="Level/Pillar2" unique_id=1781344841]
 mesh = SubResource("Mesh_pillar")
 
-[node name="Collision" type="CollisionShape3D" parent="Level/Pillar2"]
+[node name="Collision" type="CollisionShape3D" parent="Level/Pillar2" unique_id=2057347433]
 shape = SubResource("Shape_pillar")
 
-[node name="Pillar3" type="StaticBody3D" parent="Level"]
+[node name="Pillar3" type="StaticBody3D" parent="Level" unique_id=880444524]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2, -13)
-collision_layer = 1
 collision_mask = 0
 
-[node name="Mesh" type="MeshInstance3D" parent="Level/Pillar3"]
+[node name="Mesh" type="MeshInstance3D" parent="Level/Pillar3" unique_id=1831579193]
 mesh = SubResource("Mesh_pillar")
 
-[node name="Collision" type="CollisionShape3D" parent="Level/Pillar3"]
+[node name="Collision" type="CollisionShape3D" parent="Level/Pillar3" unique_id=273624088]
 shape = SubResource("Shape_pillar")
 
-[node name="Crate1" type="StaticBody3D" parent="Level"]
+[node name="Crate1" parent="Level" unique_id=1517317726 instance=ExtResource("1_sugp2")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -6, 0.5, -2)
-collision_layer = 1
-collision_mask = 0
 
-[node name="Mesh" type="MeshInstance3D" parent="Level/Crate1"]
-mesh = SubResource("Mesh_crate")
-
-[node name="Collision" type="CollisionShape3D" parent="Level/Crate1"]
-shape = SubResource("Shape_crate")
-
-[node name="Crate2" type="StaticBody3D" parent="Level"]
+[node name="Crate2" parent="Level" unique_id=896202955 instance=ExtResource("1_sugp2")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -7.5, 0.5, -2)
-collision_layer = 1
-collision_mask = 0
 
-[node name="Mesh" type="MeshInstance3D" parent="Level/Crate2"]
-mesh = SubResource("Mesh_crate")
-
-[node name="Collision" type="CollisionShape3D" parent="Level/Crate2"]
-shape = SubResource("Shape_crate")
-
-[node name="Crate3" type="StaticBody3D" parent="Level"]
+[node name="Crate3" parent="Level" unique_id=507717514 instance=ExtResource("1_sugp2")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -6.75, 1.5, -2)
-collision_layer = 1
+
+[node name="Ramp" type="StaticBody3D" parent="Level" unique_id=1909719349]
+transform = Transform3D(1, 0, 0, 0, 0.9397, 0.342, 0, -0.342, 0.9397, 8, 1.2, -10)
 collision_mask = 0
 
-[node name="Mesh" type="MeshInstance3D" parent="Level/Crate3"]
-mesh = SubResource("Mesh_crate")
-
-[node name="Collision" type="CollisionShape3D" parent="Level/Crate3"]
-shape = SubResource("Shape_crate")
-
-[node name="Ramp" type="StaticBody3D" parent="Level"]
-transform = Transform3D(1, 0, 0, 0, 0.9397, 0.3420, 0, -0.3420, 0.9397, 8, 1.2, -10)
-collision_layer = 1
-collision_mask = 0
-
-[node name="Mesh" type="MeshInstance3D" parent="Level/Ramp"]
+[node name="Mesh" type="MeshInstance3D" parent="Level/Ramp" unique_id=482034928]
 mesh = SubResource("Mesh_ramp")
 
-[node name="Collision" type="CollisionShape3D" parent="Level/Ramp"]
+[node name="Collision" type="CollisionShape3D" parent="Level/Ramp" unique_id=1933818884]
 shape = SubResource("Shape_ramp")
 
-[node name="Platform" type="StaticBody3D" parent="Level"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 8, 2.55, -15.76)
-collision_layer = 1
+[node name="Platform" type="StaticBody3D" parent="Level" unique_id=1465644689]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 8, 2.55, -1.4113121)
 collision_mask = 0
 
-[node name="Mesh" type="MeshInstance3D" parent="Level/Platform"]
+[node name="Mesh" type="MeshInstance3D" parent="Level/Platform" unique_id=1371358001]
 mesh = SubResource("Mesh_platform")
 
-[node name="Collision" type="CollisionShape3D" parent="Level/Platform"]
+[node name="Collision" type="CollisionShape3D" parent="Level/Platform" unique_id=1150543704]
 shape = SubResource("Shape_platform")
 
-[node name="Player" parent="." instance=ExtResource("1_player")]
+[node name="Borders" type="Node3D" parent="Level" unique_id=1386895118]
+
+[node name="Border1" type="StaticBody3D" parent="Level/Borders" unique_id=1820767228]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 3, -28.594713)
+collision_mask = 0
+
+[node name="Mesh" type="MeshInstance3D" parent="Level/Borders/Border1" unique_id=698795251]
+mesh = SubResource("BoxMesh_sugp2")
+
+[node name="Collision" type="CollisionShape3D" parent="Level/Borders/Border1" unique_id=262432950]
+shape = SubResource("BoxShape3D_jyhfs")
+
+[node name="Border2" type="StaticBody3D" parent="Level/Borders" unique_id=1043882564]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 3, 30.52723)
+collision_mask = 0
+
+[node name="Mesh" type="MeshInstance3D" parent="Level/Borders/Border2" unique_id=1035517189]
+mesh = SubResource("BoxMesh_sugp2")
+
+[node name="Collision" type="CollisionShape3D" parent="Level/Borders/Border2" unique_id=1224452938]
+shape = SubResource("BoxShape3D_jyhfs")
+
+[node name="Border3" type="StaticBody3D" parent="Level/Borders" unique_id=1069591231]
+transform = Transform3D(-4.371139e-08, 0, 1, 0, 1, 0, -1, 0, -4.371139e-08, -28.580784, 3, 13.228977)
+collision_mask = 0
+
+[node name="Mesh" type="MeshInstance3D" parent="Level/Borders/Border3" unique_id=183560238]
+mesh = SubResource("BoxMesh_sugp2")
+
+[node name="Collision" type="CollisionShape3D" parent="Level/Borders/Border3" unique_id=1387740292]
+shape = SubResource("BoxShape3D_jyhfs")
+
+[node name="Border4" type="StaticBody3D" parent="Level/Borders" unique_id=546196981]
+transform = Transform3D(-4.371139e-08, 0, 1, 0, 1, 0, -1, 0, -4.371139e-08, 28.09697, 3, 13.228977)
+collision_mask = 0
+
+[node name="Mesh" type="MeshInstance3D" parent="Level/Borders/Border4" unique_id=2026016223]
+mesh = SubResource("BoxMesh_sugp2")
+
+[node name="Collision" type="CollisionShape3D" parent="Level/Borders/Border4" unique_id=323806218]
+shape = SubResource("BoxShape3D_jyhfs")
+
+[node name="Player" parent="." unique_id=1963123704 instance=ExtResource("1_player")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.1, 4)
+
+[node name="Enemy3" parent="." unique_id=1200660736 instance=ExtResource("2_0wfyh")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 6.0572557, 0, 0)
+
+[node name="Enemy2" parent="." unique_id=1802870043 instance=ExtResource("2_0wfyh")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 3.8756907, 0, 0)
+
+[node name="Enemy" parent="." unique_id=1327767515 instance=ExtResource("2_0wfyh")]

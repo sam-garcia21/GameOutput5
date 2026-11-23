@@ -1,0 +1,52 @@
+[gd_scene format=3 uid="uid://b60chkqu05yva"]
+
+[ext_resource type="Script" uid="uid://ep52as6x0oa1" path="res://scenes/crate.gd" id="1_b66cd"]
+
+[sub_resource type="StandardMaterial3D" id="Mat_crate"]
+albedo_color = Color(0.65, 0.45, 0.25, 1)
+
+[sub_resource type="BoxMesh" id="Mesh_crate"]
+material = SubResource("Mat_crate")
+size = Vector3(1.5, 1, 1.5)
+
+[sub_resource type="BoxShape3D" id="Shape_crate"]
+size = Vector3(1.5, 1, 1.5)
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_b66cd"]
+transparency = 1
+cull_mode = 2
+
+[sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_dwt0d"]
+particle_flag_align_y = true
+particle_flag_disable_z = true
+emission_shape = 1
+emission_sphere_radius = 0.2
+spread = 180.0
+initial_velocity_min = 20.0
+initial_velocity_max = 25.0
+gravity = Vector3(0, 0, 0)
+
+[sub_resource type="QuadMesh" id="QuadMesh_kn6iu"]
+size = Vector2(0.1, 0.2)
+
+[node name="Crate1" type="StaticBody3D" unique_id=1517317726]
+collision_mask = 0
+script = ExtResource("1_b66cd")
+
+[node name="Mesh" type="MeshInstance3D" parent="." unique_id=345618065]
+mesh = SubResource("Mesh_crate")
+
+[node name="Collision" type="CollisionShape3D" parent="." unique_id=1689319517]
+shape = SubResource("Shape_crate")
+
+[node name="Particles" type="GPUParticles3D" parent="." unique_id=1061845268]
+transform = Transform3D(0.2, 0, 0, 0, 0.2, 0, 0, 0, 0.2, 0, 0, 0)
+visible = false
+material_override = SubResource("StandardMaterial3D_b66cd")
+amount = 25
+lifetime = 0.8
+explosiveness = 1.0
+use_fixed_seed = true
+seed = 4177839574
+process_material = SubResource("ParticleProcessMaterial_dwt0d")
+draw_pass_1 = SubResource("QuadMesh_kn6iu")
