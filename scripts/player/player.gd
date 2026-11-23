@@ -35,6 +35,14 @@ extends CharacterBody3D
 func _ready() -> void:
 	Input.mouse_mode = Input.MOUSE_MODE_CAPTURED
 
+func _input(event: InputEvent) -> void:
+	if Input.mouse_mode != Input.MOUSE_MODE_VISIBLE and Input.is_action_just_pressed("shoot"):
+		print("shoot")
+		var cam = $CameraPivot/SpringArm3D/Camera3D
+		var origin = cam.project_ray_origin(event.position)
+		var cam_mouse_ray_project = cam.project_ray_normal(event.position)
+		
+		$AimRayCast.fire_shot(origin, cam_mouse_ray_project)
 
 func _unhandled_input(event: InputEvent) -> void:
 	# Esc frees the mouse; clicking the window captures it again.
